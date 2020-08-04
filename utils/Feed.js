@@ -1,12 +1,17 @@
+import { useState, useEffect } from "react";
+import useAddress from "./Address";
+import { getVideo } from "./CTS3";
 import Box from "3box";
 import { ethers } from "ethers";
+const shortid = require("shortid");
 
 export function test() {
   return { test: "hello" };
 }
 
-const SPACE_APP = "DFAME";
-const defaultProvider = ethers.getDefaultProvider()
+const SPACE_APP = "DFAME"; // "fame"
+const address = useAddress()
+const provider = ethers.getDefaultProvider()
 
 export function getNewVideos() {
   const s = Box.getSpace(
@@ -18,6 +23,58 @@ export function getNewVideos() {
 }
 
 // const box = await Box.create(window.ethereum);
+
+export async function useSaveData(video) {
+  const [box, setBox] = useState()
+
+  useEffect(() => {
+    Box.create().then(box => {
+      window.box = box
+      setBox(box)
+      bauth.disabled = false
+      openThread.disabled = false
+    })
+  }, [])
+
+  console.log(box)
+
+  await box.auth(SPACE_APP, { address, provider })
+  await box.syncDone
+
+  await box.public.set(video)
+
+  const id = (shortid.generate()).toString()
+  const videoFile = video.title.concat(id)
+
+  await box.public.set(id, videoFile)
+
+}
+
+export function useGetData(id, userAddress) {
+  const [space, setSpace] = useState()
+  const [videoData, setVideoData] = useState({})
+
+    useEffect(() => {
+      const newSpace = Box.getSpace(userAddress, SPACE_APP)
+      setSpace(newSpace)
+      setVideoData(getVideo(id))
+    }, [])
+
+    return videoData
+}
+
+export function useGetAllData(id, userAddress) {
+  const [space, setSpace] = useState()
+  const [videoData, setVideoData] = useState({})
+
+    useEffect(() => {
+      const newSpace = Box.getSpace(userAddress, SPACE_APP)
+      setSpace(newSpace)
+      setVideoData(getVideo(id))
+    }, [])
+
+    return space.public.all
+}
 
 export class Feed {
   constructor(box) {
