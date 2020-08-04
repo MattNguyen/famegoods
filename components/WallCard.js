@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
-import { Icon, InlineIcon } from "@iconify/react";
+import { Icon, InlineIcon } from '@iconify/react';
+import playSolid from '@iconify/icons-la/play-solid';
 import heartSolid from "@iconify/icons-la/heart-solid";
 import commentsSolid from "@iconify/icons-la/comments-solid";
 import shareAltSquareSolid from "@iconify/icons-la/share-alt-square-solid";
@@ -28,17 +29,18 @@ export default function WallCard({ tags, title, video, gif, file }) {
     <div className="relative w-screen h-screen snap-center always-stop rounded shadow-xl z-0">
       <Link href="/post/[slug]" as={"/post/" + file.id}>
         <div className="rounded shadow-lg h-full mx-auto w-auto max-w-md cursor-pointer">
-          <img className="h-full object-cover" src={gif} />
+          <img className="h-full w-full object-cover" src={gif} />
           <div className="absolute bottom-0 mx-6 mb-24">
-            <div className="font-bold text-xl mb-2 text-white">{title}</div>
+            <div className="break-words font-extrabold text-5xl mb-2 p-2 text-white mx-auto w-auto max-w-md">{title}</div>
             <div className="flex py-4">
-              <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full mr-2">
-                3 $TINGLES
+              <button className="flex bg-white hover:bg-gray-300 text-black font-medium tracking-wide py-2 px-4 w-48 rounded-lg mr-2 items-center">
+                <Icon className="m-1" icon={playSolid} color="black" /> Tier 2 Members
               </button>
             </div>
-            <div className="inline-block bg-gray-200 bg-opacity-50 rounded-full px-3 py-1 text-sm font-semibold text-black mr-2">
+            {/*<div className="inline-block bg-gray-200 bg-opacity-50 rounded-full px-3 py-1 text-sm font-semibold text-black mr-2">
               Tags: {tags}
-            </div>
+  </div>*/}
+
           </div>
         </div>
       </Link>
@@ -49,7 +51,7 @@ export default function WallCard({ tags, title, video, gif, file }) {
 // <Icon icon={commentsSolid} height="3em" className="text-white" />
 // <Icon icon={baselineShare} height="3em" className="text-blue-600" />
 
-/* 
+/*
 <div className="absolute bottom-0 right-0 space-y-8 mx-6 my-8">
           <Icon
             icon={heartSolid}
