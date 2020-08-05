@@ -12,6 +12,7 @@ import commentsSolid from "@iconify/icons-la/comments-solid";
 import shareAltSquareSolid from "@iconify/icons-la/share-alt-square-solid";
 import baselineShare from "@iconify/icons-ic/baseline-share";
 import * as Server from "../../utils/CTS3";
+import ProfileHeader from "./profileHeader";
 
 const init = {
   feed: [{ file: "small", refresh: 0 }],
@@ -116,6 +117,10 @@ function Wall() {
             </div>
           )}
 
+
+          <div className="absolute top-0">
+            <ProfileHeader />
+          </div>
           <div className="absolute bottom-0">
             <div className="mb-20 ml-4">
               <div className="font-bold text-xl mb-2 text-white text-center">
