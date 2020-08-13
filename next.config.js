@@ -29,8 +29,26 @@ module.exports = withBundleAnalyzer({
     // }
     // config.resolve.mainFields = config.resolve.mainFields || [];
     // config.resolve.mainFields = ["browser", ...config.resolve.mainFields];
+    config.module.rules.push({
+      test: /\.(sa|sc|c)ss$/,
+      use: [
+        // Creates `style` nodes from JS strings
+        "style-loader",
+        // Translates CSS into CommonJS
+        "css-loader",
+        // Compiles Sass to CSS
+        "sass-loader",
+      ],
+    });
 
-    // console.log("config", config);
+    config.module.rules.push({
+      test: /\.svg$/,
+      loader: "svg-inline-loader",
+    });
+
+    // config.plugins.push("inline-react-svg");
+
+    console.log("config", config);
     // console.log(JSON.stringify(config.resolve));
 
     config.resolve.alias.string_decoder = false; // "string_decoder";
