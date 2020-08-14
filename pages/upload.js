@@ -3,8 +3,14 @@ import Page from "../components/Page";
 import { TextField, Slider, Typography, Button } from "@material-ui/core";
 import { addVideo } from "../utils/CTS3";
 import { Alert, AlertTitle } from "@material-ui/lab";
+import Lottie from 'react-lottie';
 // import { createGif } from "../utils/GifUtil";
+// npm install --save-dev @iconify/react @iconify/icons-la
+import { Icon, InlineIcon } from '@iconify/react';
 import LoadingOverlay from "../components/LoadingOverlay";
+import timesSolid from '@iconify/icons-la/times-solid';
+import windowRestoreSolid from '@iconify/icons-la/window-restore-solid';
+import windowRestore from '@iconify/icons-la/window-restore';
 import Link from "next/link";
 import SetTicket from "../components/upload/SetTicket";
 import useAddress from "../utils/Address";
@@ -113,7 +119,20 @@ export default function Other() {
   }
 
   if (!address) {
-    return <div>Looking for metamask...</div>;
+    return <div className="overflow-hidden">
+      <div className="absolute top-0 right-0">
+        <Link href="post/[slug]">
+          <Icon icon={timesSolid} className="h-8 w-8 mt-4 mr-4" />
+        </Link>
+      </div>
+      <h1 className="mt-32 tracking-wider text-center font-extrabold text-3xl text-gray-900 text-opacity-100">Authorize Metamask</h1>
+      <p className="mt-4 text-gray-700 text-center tracking-wide text-normal ml-6 mr-6">Use the Metamask popup to allow access</p>
+      <div className="flex flex-col items-center justify-center mt-10">
+        <img src="https://raw.githubusercontent.com/MetaMask/brand-resources/master/SVG/metamask-fox.svg"
+          alt="Metamask Logo"
+          className="h-48 w-48" />
+      </div>
+    </div>;
   }
 
   return (
