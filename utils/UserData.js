@@ -22,6 +22,10 @@ export function getProfile(address) {
   return Box.getProfile(address);
 }
 
+export async function setProfile(keys, values) {
+  await Box.public.setMultiple(keys, values);
+}
+
 let enabled = false;
 
 export class DataStore {

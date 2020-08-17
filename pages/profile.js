@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from "react";
 import Page from "../components/Page";
 import { ethers } from "ethers";
-// import Box from "3box";
+import { getProfile, setProfile } from "../utils/UserData";
 import useAddress from "../utils/Address";
+// import Box from "3box";
 {
   /*const Box = require("3box");*/
 }
@@ -24,7 +25,15 @@ export default function Index() {
   }, []);*/
   }
   const [box, setBox] = useState();
-  const [address, setAddress] = useState();
+  const [testAddress, setTestAddress] = useState('0xffaDc07f1BFb127F4312e8652fE94aB0c771b54D');
+  const [userProfile, setUserProfile] = useState({
+    name: '',
+    description: '',
+    emoji: '',
+    image: [],
+    location: '',
+    website: '',
+  });
 
   let provider;
   let signer;
@@ -71,6 +80,33 @@ export default function Index() {
     }
   };
 
+  const get3BoxProfile = async (address) => {
+    const userProfile = await getProfile(address);
+    setUserProfile({
+      name: userProfile.name,
+      description: userProfile.description,
+      emoji: userProfile.emoji,
+      image: userProfile.image,
+      location: userProfile.location,
+      website: userProfile.website,
+    });
+  }
+
+  useEffect(() => {
+    get3BoxProfile(testAddress);
+    console.log(userProfile);
+  }, [])
+
+  // Things tried to get image
+
+  //  axios
+  //     .get("https://ipfs.infura.io:5001/api/v0/get?arg=QmfTHLa4d1TaU5JkxwAWVJ52TWdrZh3Sfh2pa3WKStG5P1")
+  //     .then((o) => {
+  //       setUserProfile((x) => ({...x, image: o}))
+  //     })
+  //   console.log(userProfile);
+  // ------------------------------
+
   // useEffect(() => {
   //   async function setup() {
   //     provider = ethers.getDefaultProvider();
@@ -86,6 +122,10 @@ export default function Index() {
   //   setup();
 
   // }, [])
+
+  // "https://ipfs.infura.io:5001/api/v0/get?arg=QmfTHLa4d1TaU5JkxwAWVJ52TWdrZh3Sfh2pa3WKStG5P1"
+  // "https://images.unsplash.com/photo-1518549945153-64368b032957?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=2734&q=80"
+
 
   return (
     <div>
@@ -107,10 +147,13 @@ export default function Index() {
               </div>
               <div className="text-center px-3 pb-6 pt-2">
                 <h1 className="text-black text-lg bold font-sans">
-                  Nele Weißhan
+                  {userProfile.name}
                 </h1>
                 <p className="mt-2 font-sans font-light text-grey-dark">
-                  Hello, I'm from another the other side!
+                  {userProfile.description} {userProfile.emoji}
+                </p>
+                <p className="mt-2 font-sans font-light text-grey-dark">
+                  {userProfile.website}
                 </p>
                 <p className="mt-4">
                   Wallet Address: <br />

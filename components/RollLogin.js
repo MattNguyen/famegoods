@@ -10,7 +10,7 @@ export default function RollLogin() {
 
 	return (
 		<div>
-			<img src="https://pbs.twimg.com/profile_images/1221640912050294784/XBtcYXED_400x400.jpg" className="-mt-6" />
+			<img src="https://pbs.twimg.com/profile_images/1221640912050294784/XBtcYXED_400x400.jpg" className="-mt-6 mx-auto" />
 			<div className="flex justify-center">
 				<p className="text-5xl font-header text-center -mt-12">
 					Roll Social Token Wallet
