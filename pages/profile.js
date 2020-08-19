@@ -86,7 +86,7 @@ export default function Index() {
       name: userProfile.name,
       description: userProfile.description,
       emoji: userProfile.emoji,
-      image: userProfile.image,
+      image: Object.values(userProfile.image[0].contentUrl),
       location: userProfile.location,
       website: userProfile.website,
     });
@@ -94,18 +94,7 @@ export default function Index() {
 
   useEffect(() => {
     get3BoxProfile(testAddress);
-    console.log(userProfile);
   }, [])
-
-  // Things tried to get image
-
-  //  axios
-  //     .get("https://ipfs.infura.io:5001/api/v0/get?arg=QmfTHLa4d1TaU5JkxwAWVJ52TWdrZh3Sfh2pa3WKStG5P1")
-  //     .then((o) => {
-  //       setUserProfile((x) => ({...x, image: o}))
-  //     })
-  //   console.log(userProfile);
-  // ------------------------------
 
   // useEffect(() => {
   //   async function setup() {
@@ -123,9 +112,7 @@ export default function Index() {
 
   // }, [])
 
-  // "https://ipfs.infura.io:5001/api/v0/get?arg=QmfTHLa4d1TaU5JkxwAWVJ52TWdrZh3Sfh2pa3WKStG5P1"
-  // "https://images.unsplash.com/photo-1518549945153-64368b032957?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=2734&q=80"
-
+  console.log(userProfile)
 
   return (
     <div>
@@ -141,7 +128,7 @@ export default function Index() {
             <div className="sm:align-middle rounded rounded-t-lg overflow-hidden shadow max-w-md my-3">
               <div className="flex justify-center mt-10">
                 <img
-                  src="https://i.imgur.com/8Km9tLL.jpg"
+                  src={`https://ipfs.infura.io/ipfs/${userProfile.image[0]}`}
                   className="rounded-full border-solid border-white border-2 -mt-3"
                 />
               </div>
