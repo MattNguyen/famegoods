@@ -9,8 +9,8 @@ import useAddress from "../utils/Address";
 }
 
 export default function Index() {
-  {
-    /*const [profile, setProfile] = useState(null);
+  /*{
+    const [profile, setProfile] = useState(null);
 
   async function getProfile() {
     const _profile = await Box.getProfile(
@@ -22,10 +22,14 @@ export default function Index() {
 
   useEffect(() => {
     getProfile();
-  }, []);*/
+  }, []);
   }
+
+  '0x489e4CFfa9B59784C597C51cd24000b1db506c20'
+  '0xffaDc07f1BFb127F4312e8652fE94aB0c771b54D'
+*/
   const [box, setBox] = useState();
-  const [testAddress, setTestAddress] = useState('0xffaDc07f1BFb127F4312e8652fE94aB0c771b54D');
+  const [address, setAddress] = useState('');
   const [userProfile, setUserProfile] = useState({
     name: '',
     description: '',
@@ -80,8 +84,13 @@ export default function Index() {
     }
   };
 
-  const get3BoxProfile = async (address) => {
-    const userProfile = await getProfile(address);
+  let userAddress = useAddress();
+  if (address !== userAddress) {
+    setAddress(userAddress);
+  }
+
+  const get3BoxProfile = async (addr) => {
+    const userProfile = await getProfile(addr);
     setUserProfile({
       name: userProfile.name,
       description: userProfile.description,
@@ -93,26 +102,9 @@ export default function Index() {
   }
 
   useEffect(() => {
-    get3BoxProfile(testAddress);
-  }, [])
-
-  // useEffect(() => {
-  //   async function setup() {
-  //     provider = ethers.getDefaultProvider();
-  //     metaMask = window.ethereum;
-  //     if (metaMask.enable) await metaMask.enable();
-  //     const accounts = await metaMask.send('eth_accounts');
-  //     const account = accounts.result[0];
-
-  //     setAddress(account);
-  //     // signer = (new ethers.providers.Web3Provider(window.ethereum)).getSigner();
-  //     console.log(account)
-  //   }
-  //   setup();
-
-  // }, [])
-
-  console.log(userProfile)
+    if (!address) return;
+    get3BoxProfile(address);
+  }, [address])
 
   return (
     <div>
