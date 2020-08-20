@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import * as Roll from "../utils/Roll";
+import Link from "next/link";
 
 export default function RollLogin() {
 	const [windowHost, setWindowHost] = useState('');
@@ -24,11 +25,11 @@ export default function RollLogin() {
 				</a>
 			</div>
 			<div>
-				<a href='https://app.tryroll.com/createAccount/no_claim' target='_blank'>
+				<Link href="/roll_register">
 					<button className="flex justify-center mx-auto mt-8 bg-blue-500 rounded-lg p-3 text-white text-center">
 						Register for a Roll Wallet
           </button>
-				</a>
+        </Link>
 			</div>
 		</div>
 	);

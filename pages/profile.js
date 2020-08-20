@@ -126,10 +126,10 @@ export default function Index() {
                 </div>
                 <div className="text-center px-3 pb-6 pt-2">
                   <h1 className="text-black text-lg bold font-sans">
-                    {userProfile.name}
+                    {userProfile.name} {userProfile.emoji}
                   </h1>
                   <p className="mt-2 font-sans font-light text-grey-dark">
-                    {userProfile.description} {userProfile.emoji}
+                    {userProfile.description} 
                   </p>
                   <p className="mt-2 font-sans font-light text-grey-dark">
                     {userProfile.website}
