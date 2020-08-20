@@ -128,5 +128,6 @@ export async function forUser(address) {
   stores[address] = d;
   await d.init(address);
 
+  console.log(d);
   return d;
 }
