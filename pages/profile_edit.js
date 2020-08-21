@@ -1,47 +1,84 @@
-import {useEffect, useState} from 'react';
+import { useEffect, useState, useRef } from 'react';
 import useAddress from "../utils/Address";
-const Box = require('3box')
+import * as UserData from "../utils/UserData";
+
+const Box = require('3box');
+const ipfsClient = require('ipfs-http-client')
+const ipfs = ipfsClient({ host: 'ipfs.infura.io', port: 5001, protocol: 'https' })
 
 
-// import EditProfile from '3box-profile-edit-react';
+const ProfileEditor = () => {
+  const [state, setState] = useState({
+    buffer: null,
+    file: null,
+    loading: false,
+    ipfsHash: '',
+  });
 
+  const profileImage = useRef();
 
-const MyComponent = () => {
-  const [state, setState] = useState();
+  const captureFile = (e) => {
+    e.preventDefault;
+    const file = e.target.files[0];
+    profileImage.current = file;
+    setState(() => ({ file: file }));
+  }
+
+  const handleSubmit = async () => {
+    try {
+      const file = await ipfs.add(state.buffer);
+
+      setState((x) => ({ ...x, ipfsHash: file.path }));
+      
+      //setState((x) => ({ ...x, loading: false, ...x }));
+    } catch (err) {
+      console.error(err);
+    }
+  }
+
+  useEffect(() => {
+    if (!state.file) return;
+    const reader = new window.FileReader();
+    reader.readAsArrayBuffer(state.file);
+    reader.onloadend = () => {
+      setState((x) => ({ buffer: Buffer(reader.result), ...x }))
+    };
+    //setState((x) => ({ ...x, loading: true }))
+    handleSubmit();
+  }, [state.file, state.ipfsHash])
 
   return (
-    <div className="pb-24">
-      <iframe className="max-w-screen w-full min-h-screen" 
-        style={{marginTop: "-68px"}} 
-        src={`https://3box.io/${useAddress()}/edit`}
-      />
-    </div>);
+    <div>
+      <form className="m-4">
+        <input type="file" onChange={captureFile} />
+      </form>
+      <button 
+        onClick={ () => {console.log(state.file)} } 
+        className="rounded-lg bg-blue-400 text-white p-2 mb-4"
+      >
+      click for useRef
+      </button>
+        <br/>
+      <button 
+        onClick={ () => {console.log(state.buffer)} } 
+        className="rounded-lg bg-blue-400 text-white p-2 mb-4"
+      >
+      click for buffer
+      </button>
+        <br/>
+      <button 
+        onClick={ () => {console.log(state.ipfsHash)} } 
+        className="rounded-lg bg-blue-400 text-white p-2"
+      >
+      click for IPFS Hash
+      </button>
+      <div className="flex justify-center mt-4" >
+        <img            
+          src={`https://ipfs.infura.io/ipfs/${state.ipfsHash}`}
+        />
+      </div>
+    </div>
+  );
 };
 
-export default MyComponent;
-
-
-
-// Previous sample code
-
-  /*
-  useEffect( () => {
-      async function a() {
-           let space = await Box.openSpace('unroll-dev');
-           console.log('space', space);
-           setState(x=>({space}))
-      }
-      a();
-  }, []);
-
-  return state.space && <EditProfile
-      // required
-      box={Box}
-      space={state.space}
-      currentUserAddr={"0xffaDc07f1BFb127F4312e8652fE94aB0c771b54D"}
-      // optional
-      // customFields={customFields}
-      // currentUser3BoxProfile={myProfile}
-      // redirectFn={redirectFn}
-  />
-  */
+export default ProfileEditor;
