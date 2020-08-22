@@ -17,7 +17,7 @@ export default function WallCard({ tags, title, video, gif, file }) {
 
   const address = file.address;
 
-  useEffect((x) => {
+  useEffect(() => {
     async function run() {
       const box = await UserData.forUser(address);
       // console.log("file.id", file.id);
