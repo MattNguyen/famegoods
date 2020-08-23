@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import Link from "next/link";
+import { useRouter } from "next/router";
 import { Icon } from "@iconify/react";
 import playSolid from "@iconify/icons-la/play-solid";
 import lockSolid from "@iconify/icons-la/lock-solid";
@@ -7,9 +7,12 @@ import ellipsisVSolid from "@iconify/icons-la/ellipsis-v-solid";
 import ProfileHeader from "./profileHeader";
 
 import * as UserData from "../utils/UserData";
+import { useOvermind } from "../stores/Overmind";
 
 export default function WallCard({ gif, file }) {
   const [videoMetadata, setVideoMetadata] = useState({});
+  const router = useRouter();
+  const { state: ostate, actions } = useOvermind();
 
   useEffect(() => {
     async function run() {
@@ -22,38 +25,45 @@ export default function WallCard({ gif, file }) {
 
   if (!videoMetadata) return null;
 
+  function onClick() {
+    if (ostate.user.isAuthenticated) {
+      router.push("/post/[slug]", "/post/" + file.id);
+      return;
+    }
+    actions.toggleWalletConnectModal(window.location.href + "post/" + file.id);
+  }
+
   return (
     <div className="container h-screen flex items-center justify-center snap-center always-stop px-6">
-      <Link href="/post/[slug]" as={"/post/" + file?.id}>
-        <div
-          className="relative rounded-md shadow-lg h-48 w-full justify-center cursor-pointer overflow-hidden"
-          style={{
-            backgroundImage: `url(${gif})`,
-            backgroundSize: "cover",
-            backgroundPosition: "50%",
-            height: "75%",
-          }}
-        >
-          <div className="flex absolute top-0 right-0 left-0 p-6">
-            <ProfileHeader />
-            <Icon
-              icon={ellipsisVSolid}
-              color="white"
-              className="top-0 right-0 h-8 w-8"
-            />
-          </div>
-          <div className="absolute bottom-0 left-0 right-0 p-6">
-            <Icon className="w-10 h-10" icon={lockSolid} color="white" />
-            <div className="break-words font-extrabold text-4xl mb-4 p-2 text-white">
-              {videoMetadata.title || "Loading..."}
-            </div>
-
-            <UnlockButton>
-              Own {videoMetadata.tokens} {videoMetadata.tokenName} to Unlock
-            </UnlockButton>
-          </div>
+      <div
+        onClick={onClick}
+        className="relative rounded-md shadow-lg h-48 w-full justify-center cursor-pointer overflow-hidden"
+        style={{
+          backgroundImage: `url(${gif})`,
+          backgroundSize: "cover",
+          backgroundPosition: "50%",
+          height: "75%",
+        }}
+      >
+        <div className="flex absolute top-0 right-0 left-0 p-6">
+          <ProfileHeader />
+          <Icon
+            icon={ellipsisVSolid}
+            color="white"
+            className="top-0 right-0 h-8 w-8"
+          />
         </div>
-      </Link>
+        <div className="absolute bottom-0 left-0 right-0 p-6">
+          <Icon className="w-10 h-10" icon={lockSolid} color="white" />
+          <div className="break-words font-extrabold text-4xl mb-4 p-2 text-white">
+            {videoMetadata.title || "Loading..."}
+          </div>
+
+          <UnlockButton>
+            Own {videoMetadata.tokens} {videoMetadata.tokenName} to Unlock
+          </UnlockButton>
+        </div>
+      </div>
     </div>
   );
 }

@@ -2,7 +2,8 @@ import React from "react";
 import * as Roll from "../utils/Roll";
 import Link from "next/link";
 
-export default function RollLogin() {
+export default function RollLogin({ redirectTo }) {
+  if (!redirectTo) redirectTo = window.location.href;
   return (
     <div className="container p-6">
       <div className="h-56 w-56 mx-auto mb-16">
@@ -13,7 +14,7 @@ export default function RollLogin() {
       </p>
       <div className="mx-auto mt-12">
         <a
-          href={Roll.loginUrl(window.location.href)}
+          href={Roll.loginUrl(redirectTo)}
           className="flex justify-center w-full p-3 text-center rounded-lg mt-4 bg-blue-500 text-white"
         >
           Open Your Roll Wallet

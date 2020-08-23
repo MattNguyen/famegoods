@@ -12,6 +12,7 @@ import commentsSolid from "@iconify/icons-la/comments-solid";
 import shareAltSquareSolid from "@iconify/icons-la/share-alt-square-solid";
 import angleRightSolid from "@iconify/icons-la/angle-right-solid";
 import timesCircle from "@iconify/icons-la/times-circle";
+import timesSolid from "@iconify/icons-la/times-solid";
 import storeSolid from "@iconify/icons-la/store-solid";
 import windowClose from "@iconify/icons-la/window-close";
 import baselineShare from "@iconify/icons-ic/baseline-share";
@@ -109,8 +110,8 @@ export default function Slug() {
 
   useEffect(() => {
     if (ostate.user.balances.length === 0) actions.refreshUser();
-  }, [ostate.user.isUnauthenticated, ostate.user.balances, ostate.user]);
-    
+  }, [ostate.user.isAuthenticated, ostate.user.balances, ostate.user]);
+
   let hasEnough = false;
   let balance = 0;
   if (ostate.user.balances.length > 0 && videoObj.tokenName) {
@@ -128,7 +129,7 @@ export default function Slug() {
       );
     }
   }
-  
+
   return (
     <>
       <Head>
@@ -157,11 +158,18 @@ export default function Slug() {
             </div>
           )}
 
-          {ostate.user.isUnauthenticated && state.file && (
-            <RollLogin />
+          {!ostate.user.isAuthenticated && state.file && (
+            <>
+              <div className="absolute top-0 right-0 mt-4 mr-4">
+                <Link href="/">
+                  <Icon icon={timesSolid} className="h-8 w-8 text-gray-700" />
+                </Link>
+              </div>
+              <RollLogin />
+            </>
           )}
 
-          {!ostate.user.isUnauthenticated && state.file && hasEnough && (
+          {ostate.user.isAuthenticated && state.file && hasEnough && (
             <div onClick={unlock}>
               <div className="bg-black bg-opacity-100">
                 <img
@@ -221,7 +229,7 @@ export default function Slug() {
             </div>
           )}
 
-          {!ostate.user.isUnauthenticated && state.file && !hasEnough && (
+          {ostate.user.isAuthenticated && state.file && !hasEnough && (
             <div>
               <a href="https://exchange.tryroll.com/#/swap" target="_blank">
                 <div className="bg-black bg-opacity-100">
@@ -310,4 +318,3 @@ export default function Slug() {
     </>
   );
 }
-

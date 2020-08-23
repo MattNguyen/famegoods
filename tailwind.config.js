@@ -10,17 +10,20 @@ module.exports = {
     ],
   },
   theme: {
+    borderRadius: {
+      xl: "2rem",
+    },
     extend: {
       animation: {
-        'pulse': 'pulse 4s infinite',
+        pulse: "pulse 4s infinite",
       },
       fontFamily: {
-        header: ['Recursive']
-      }
+        header: ["Recursive"],
+      },
     },
   },
   variants: {
-    scrollSnapType: ['responsive'],
+    scrollSnapType: ["responsive"],
   },
-  plugins: [require('tailwindcss-scroll-snap')],
+  plugins: [require("tailwindcss-scroll-snap")],
 };

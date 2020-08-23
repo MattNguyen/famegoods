@@ -1,22 +1,20 @@
-import { useRef, useLayoutEffect, useEffect, useState } from "react";
-import Nav from "./Nav";
+import { useRef, useEffect, useState } from "react";
 import Head from "next/head";
 import Link from "next/link";
-import useScript from "react-script-hook";
-import { Icon, InlineIcon } from "@iconify/react";
-import paperPlane from "@iconify/icons-la/paper-plane";
-import walletSolid from "@iconify/icons-la/wallet-solid";
+import { Icon } from "@iconify/react";
 import streamSolid from "@iconify/icons-la/stream-solid";
 import uploadSolid from "@iconify/icons-la/upload-solid";
 import userIcon from "@iconify/icons-la/user";
 
-import { overmind, useOvermind } from "../stores/Overmind";
+import { useOvermind } from "../stores/Overmind";
 import * as Roll from "../utils/Roll";
+import RollLogin from "../components/RollLogin";
+import BottomSheetModal from "../components/BottomSheetModal";
 
 export default function Layout({ children, url }) {
   const [zoom, setZoom] = useState(1);
   const [_vanta, setVenta] = useState(null);
-  const [state, setState] = useState({ refresh: 0 });
+  const [state] = useState({ refresh: 0 });
   const element = useRef();
 
   // Overmind
@@ -90,6 +88,8 @@ export default function Layout({ children, url }) {
 
   // Previous parent css removed: "grid grid-rows-3" style={{ gridTemplateRows: 'auto 1fr auto' }}
 
+  const { walletConnectModal, redirectTo } = ostate.application;
+
   return (
     <div ref={element} className="w-screen h-screen">
       <Head></Head>
@@ -115,6 +115,12 @@ export default function Layout({ children, url }) {
           </Link>
         </div>
       </footer>
+
+      {walletConnectModal ? (
+        <BottomSheetModal onExit={actions.toggleWalletConnectModal}>
+          <RollLogin redirectTo={redirectTo} />
+        </BottomSheetModal>
+      ) : null}
     </div>
   );
 }

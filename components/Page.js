@@ -13,6 +13,8 @@ import Others from "../pages/upload";
 import WallCard from "./WallCard";
 import Header from "./header";
 
+import { useOvermind } from "../stores/Overmind";
+
 function mf(i) {
   const file = "b";
   return { file, id: Math.random() };
@@ -28,6 +30,8 @@ function Page() {
   const [sampleData, setSampleData] = useState([]);
   const [videos, setVideos] = useState([]);
 
+  const { state: ostate, actions } = useOvermind();
+
   useEffect(() => {
     try {
       getVideos(setVideos);
@@ -36,6 +40,9 @@ function Page() {
       console.log(e);
     }
   }, []);
+  useEffect(() => {
+    if (ostate.user.balances.length === 0) actions.refreshUser();
+  }, [ostate.user.balances, ostate.user]);
 
   // Logic could be recycled for different bottom drawer solution.
 
