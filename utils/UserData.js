@@ -39,7 +39,7 @@ export class DataStore {
     }
     console.log("opening", address);
 
-    if (!enabled) {
+    if (!enabled && !this.readOnly) {
       await window.ethereum?.enable();
       enabled = true;
     }

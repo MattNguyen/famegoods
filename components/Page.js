@@ -57,11 +57,11 @@ function Page() {
             return (
               <WallCard
                 key={index}
-                file={videoDetail}
-                tags={videoDetail.tags}
                 title={videoDetail.title}
                 gif={videoDetail.gif}
-                video={videoDetail.video}
+                file={videoDetail}
+                // tags={videoDetail.tags}
+                // video={videoDetail.video}
               />
             );
           })}
@@ -84,4 +84,3 @@ function Page() {
 export default Page;
 
 // <SortBy />
-

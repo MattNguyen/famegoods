@@ -1,40 +1,30 @@
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
-import { Icon, InlineIcon } from "@iconify/react";
+import { Icon } from "@iconify/react";
 import playSolid from "@iconify/icons-la/play-solid";
 import lockSolid from "@iconify/icons-la/lock-solid";
-import heartSolid from "@iconify/icons-la/heart-solid";
 import ellipsisVSolid from "@iconify/icons-la/ellipsis-v-solid";
-import commentsSolid from "@iconify/icons-la/comments-solid";
-import shareAltSquareSolid from "@iconify/icons-la/share-alt-square-solid";
-import baselineShare from "@iconify/icons-ic/baseline-share";
 import ProfileHeader from "./profileHeader";
 
 import * as UserData from "../utils/UserData";
 
-export default function WallCard({ tags, title, video, gif, file }) {
-  const [videoObj, setVideo] = useState({});
-
-  const address = file.address;
+export default function WallCard({ gif, file }) {
+  const [videoMetadata, setVideoMetadata] = useState({});
 
   useEffect((x) => {
     async function run() {
-      const box = await UserData.forUser(address);
-      // console.log("file.id", file.id);
-
-      box.getVideo(file.id).then((x) => {
-        // console.log("video", x);
-        if (x) setVideo(x);
-      });
+      const box = await UserData.forUser(file.address);
+      const video = await box.getVideo(file.id);
+      if (video) setVideoMetadata(video);
     }
     run();
-  }, []);
+  }, [file]);
 
-  if (!videoObj) return null;
+  if (!videoMetadata) return null;
 
   return (
     <div className="container h-screen flex items-center justify-center snap-center always-stop px-6">
-      <Link href="/post/[slug]" as={"/post/" + file.id}>
+      <Link href="/post/[slug]" as={"/post/" + file?.id}>
         <div
           className="relative rounded-md shadow-lg h-48 w-full justify-center cursor-pointer overflow-hidden"
           style={{
@@ -55,11 +45,11 @@ export default function WallCard({ tags, title, video, gif, file }) {
           <div className="absolute bottom-0 left-0 right-0 p-6">
             <Icon className="w-10 h-10" icon={lockSolid} color="white" />
             <div className="break-words font-extrabold text-4xl mb-4 p-2 text-white">
-              {videoObj.title || "Loading..."}
+              {videoMetadata.title || "Loading..."}
             </div>
 
             <UnlockButton>
-              Own {videoObj.tokens} {videoObj.tokenName} to Unlock
+              Own {videoMetadata.tokens} {videoMetadata.tokenName} to Unlock
             </UnlockButton>
           </div>
         </div>
